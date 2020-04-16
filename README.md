@@ -1,47 +1,39 @@
-# Monica Foobar
+# Monica Jupyter Notebooks connected to a GOST database
 <!-- Short description of the project. -->
 
-Foobar is not a real software. The name is used here as placeholder for a described software. This readme is meant for describing an application but can be adapted to describe a software library by changing `Deployment` section to `Usage`. 
+This is a docker compose which allows to connect Jupyter Notebooks to a gost Database filled with Monica's demonstation content.
 
-<!-- A teaser figure may be added here. It is best to keep the figure small (<500KB) and in the same repo -->
+You can read with it: Sound Heat Maps, Density Heat Maps and Trackind ID. 
 
-## Getting Started
-<!-- Instruction to make the project up and running. -->
+In this example, the dump files was already created from Woodstower Festival data with the help of gost-db-dump-dummy. 
+That app is a version of gost-db-dump adapted for when the observation table is really huge and you want only a part.
 
-The project documentation is available on the [Wiki](https://github.com/MONICA-Project/template/wiki).
-
-## Deployment
-<!-- Deployment/Installation instructions. If this is software library, change this section to "Usage" and give usage examples -->
-
-### Docker
-To run the latest version of foobar:
-```bash
-docker run -p 8080:80 foobar
-```
-
-## Development
-<!-- Developer instructions. -->
-
-### Prerequisite
-This projects depends on xyz. Installation instructions are available [here](https://xyz.com)
-
-On Debian:
-```bash
-apt install xyz
-```
-
-### Test
-Use tests.sh to run unit tests:
-```bash
-sh tests.sh
-```
-
-### Build
+0. Show how this version of Jupyter Container and its dependencies was built. IT happens that the new version of Jupyter Client failed for some reasons 
+so we downgraded it with the command: RUN conda install -c anaconda jupyter_client=5.3.1
 
 ```bash
-g++ -o app app.cpp
+docker-compose build
 ```
 
+1. Create a Network. It is necessary to control the gateway.
+
+```bash
+docker network create --gateway 192.168.0.1 --subnet 192.168.0.0/24 reseau
+```
+
+2. Create the Gost Database Container. You need to authorize docker to write in our local disk ( settings/shared drives)
+
+```bash
+docker-compose up -d gost-db
+```
+
+3. Run Jupyter Notebooks and Copy the link with the TOKEN
+
+```bash
+docker-compose up notebook
+```
+
+4. In the notebook, run everything with the Cell tab 
 ## Contributing
 Contributions are welcome. 
 
@@ -50,11 +42,3 @@ Please fork, make your changes, and submit a pull request. For major changes, pl
 ## Affiliation
 ![MONICA](https://github.com/MONICA-Project/template/raw/master/monica.png)  
 This work is supported by the European Commission through the [MONICA H2020 PROJECT](https://www.monica-project.eu) under grant agreement No 732350.
-
-> # Notes
->
-> * The above templace is adapted from [[1](https://github.com/cpswarm/template), [2](https://www.makeareadme.com), [3](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2), [4](https://github.com/dbader/readme-template)].
-> * Versioning: Use [SemVer](http://semver.org/) and tag the repository with full version string. E.g. `v1.0.0`
-> * License: Provide a LICENSE file at the top level of the source tree. You can use Github to [add a license](https://help.github.com/en/articles/adding-a-license-to-a-repository). This template repository has an [Apache 2.0](LICENSE) file.
->
-> *Remove this section from the actual readme.*

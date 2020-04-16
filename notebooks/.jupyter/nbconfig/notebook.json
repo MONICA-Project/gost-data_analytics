@@ -1,0 +1,6 @@
+{
+  "load_extensions": {
+    "hide_input_all/main": false,
+    "codefolding/main": true
+  }
+}
